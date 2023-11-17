@@ -21,6 +21,16 @@ RSpec.describe File do
     it { expect(File.stat(REAL_FILE).symlink?).to be false }
     it { expect(File.lstat(REAL_FILE).symlink?).to be false }
     it { expect(Pathname.new(REAL_FILE).symlink?).to be false }
+
+    it { expect(File.file?(REAL_FILE)).to be true }
+    it { expect(File.stat(REAL_FILE).file?).to be true }
+    it { expect(File.lstat(REAL_FILE).file?).to be true }
+    it { expect(Pathname.new(REAL_FILE).file?).to be true }
+
+    it { expect(File.ftype(REAL_FILE)).to eq "file" }
+    it { expect(File.stat(REAL_FILE).ftype).to eq "file" }
+    it { expect(File.lstat(REAL_FILE).ftype).to eq "file" }
+    it { expect(Pathname.new(REAL_FILE).ftype).to eq "file" }
   end
 
   context 'for a real directory' do
@@ -33,6 +43,16 @@ RSpec.describe File do
     it { expect(File.stat(REAL_DIRECTORY).symlink?).to be false }
     it { expect(File.lstat(REAL_DIRECTORY).symlink?).to be false }
     it { expect(Pathname.new(REAL_DIRECTORY).symlink?).to be false }
+
+    it { expect(File.file?(REAL_DIRECTORY)).to be false }
+    it { expect(File.stat(REAL_DIRECTORY).file?).to be false }
+    it { expect(File.lstat(REAL_DIRECTORY).file?).to be false }
+    it { expect(Pathname.new(REAL_DIRECTORY).file?).to be false }
+
+    it { expect(File.ftype(REAL_DIRECTORY)).to eq "directory" }
+    it { expect(File.stat(REAL_DIRECTORY).ftype).to eq "directory" }
+    it { expect(File.lstat(REAL_DIRECTORY).ftype).to eq "directory" }
+    it { expect(Pathname.new(REAL_DIRECTORY).ftype).to eq "directory" }
   end
 
   context 'for a symlink to a file' do
@@ -45,6 +65,16 @@ RSpec.describe File do
     it { expect(File.stat(SYMLINK_TO_FILE).symlink?).to be false }
     it { expect(File.lstat(SYMLINK_TO_FILE).symlink?).to be true } # fails on jruby
     it { expect(Pathname.new(SYMLINK_TO_FILE).symlink?).to be true }
+
+    it { expect(File.file?(SYMLINK_TO_FILE)).to be true }
+    it { expect(File.stat(SYMLINK_TO_FILE).file?).to be true }
+    it { expect(File.lstat(SYMLINK_TO_FILE).file?).to be false } # fails on jruby
+    it { expect(Pathname.new(SYMLINK_TO_FILE).file?).to be true }
+
+    it { expect(File.ftype(SYMLINK_TO_FILE)).to eq "link" } # fails on jruby
+    it { expect(File.stat(SYMLINK_TO_FILE).ftype).to eq "file" }
+    it { expect(File.lstat(SYMLINK_TO_FILE).ftype).to eq "link" } # fails on jruby
+    it { expect(Pathname.new(SYMLINK_TO_FILE).ftype).to eq "link" } # fails on jruby
   end
 
   context 'for a symlink to a directory' do
@@ -57,5 +87,15 @@ RSpec.describe File do
     it { expect(File.stat(SYMLINK_TO_DIRECTORY).symlink?).to be false }
     it { expect(File.lstat(SYMLINK_TO_DIRECTORY).symlink?).to be true } # fails on jruby
     it { expect(Pathname.new(SYMLINK_TO_DIRECTORY).symlink?).to be true }
+
+    it { expect(File.file?(SYMLINK_TO_DIRECTORY)).to be false }
+    it { expect(File.stat(SYMLINK_TO_DIRECTORY).file?).to be false }
+    it { expect(File.lstat(SYMLINK_TO_DIRECTORY).file?).to be false }
+    it { expect(Pathname.new(SYMLINK_TO_DIRECTORY).file?).to be false }
+
+    it { expect(File.ftype(SYMLINK_TO_DIRECTORY)).to eq "link" } # fails on jruby
+    it { expect(File.stat(SYMLINK_TO_DIRECTORY).ftype).to eq "directory" }
+    it { expect(File.lstat(SYMLINK_TO_DIRECTORY).ftype).to eq "link" } # fails on jruby
+    it { expect(Pathname.new(SYMLINK_TO_DIRECTORY).ftype).to eq "link" } # fails on jruby
   end
 end
